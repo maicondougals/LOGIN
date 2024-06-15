@@ -50,32 +50,7 @@
     <a href="cadastro.html">É novo aqui? Faça seu cadastro</a>
     <span id="span"></span>
     <script>
-       document.addEventListener('DOMContentLoaded', () => {
-  const token = localStorage.getItem('token');
-
-  if (window.location.pathname === '/restricted.html') {
-    if (!token) {
-      window.location.href = '/login.html';
-    } else {
-      fetch('https://back-end-login.bpbzi0.easypanel.host/restricted', {
-        method: 'GET',
-        headers: {
-          'Authorization': token
-        }
-      })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Falha na autenticação');
-        }
-      })
-      .catch(() => {
-        localStorage.removeItem('token');
-        window.location.href = '/login.html';
-      });
-    }
-  }
-});
-
+ 
 function login(username, password) {
   fetch('/login', {
     method: 'POST',
