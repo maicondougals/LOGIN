@@ -50,8 +50,6 @@
     <a href="cadastro.html">É novo aqui? Faça seu cadastro</a>
     <span id="span"></span>
     <script>
- 
-
 
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
@@ -63,25 +61,28 @@
 
             const msg = document.getElementById('span')
 
-            const url = 'https://back-end-login.bpbzi0.easypanel.host/auth/login';
-            const token = ''
+            const url = 'http://localhost:3001/auth/login';
+            
            
             const data = {
                 email: email,
                 password: password
             };
 
-            const options = {
-                method: 'POST', 
-                headers: {
-                    
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(data) 
-            };
+            
+            
+            fetch(url, {
+    method: 'POST',
+    headers: {
+        //'authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json'
+        
+    },
+    body: JSON.stringify({ email, password })
+})
 
-            fetch(url, options)
-           
+          
+            
                 .then(response => {
                     if (response.status === 404){
                         throw new Error('Usuário não encontrado.');
@@ -90,26 +91,53 @@
                         throw new Error('Senha incorreta.');
                     }
                     if (response.ok ){
-                        let success = `<span> Logado com Sucesso </span>` ;
-                        status.innerHTML = success;
-                      
-                        console.log('Logado com sucesso!');
-                        localStorage.setItem('token', data.token);
-                         window.location.href = '/restricted.html';
+                       console.log("deu certo")
+                  
                     }
                     return response.json();
                 })
                 .then(data => {
-                
-                    console.log('Resposta recebida:', data);
+
+                    const token = data.token;
+                    localStorage.setItem('token', token);
+                    console.log('Token armazenado:', token);
+                    //window.location.href = 'http://localhost:3001/restricted';
                     
+                    fetch('http://localhost:3001/restricted', {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
                 })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Falha ao acessar a página restrita.');
+                    }
+                    return response.text();
+                })
+                .then(html => {
+                    document.open();
+                    document.write(html);
+                    document.close();
+                })
+                .catch(error => {
+                    console.error('Erro:', error);
+                })
+            })
+    
+    
+        
                 .catch(error => {
                     let erro = `<span> ${error} </span>` ;
                     msg.innerHTML = erro;
                     console.error('Erro:', error);
                 });
-        });
+                
+            });
+             
+   
+
+     
     </script>
 </body>
 </html>
