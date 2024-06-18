@@ -63,18 +63,14 @@
                     if (response.status === 422){
                         throw new Error('Senha incorreta.');
                     }
-                    if (response.ok ){
-                       console.log("deu certo")
                   
-                    }
                     return response.json();
                 })
                 .then(data => {
 
                     const token = data.token;
                     localStorage.setItem('token', token);
-                    console.log('Token armazenado:', token);
-                    //window.location.href = 'http://localhost:3001/restricted';
+                   
 
                     fetch('https://back-end-login.bpbzi0.easypanel.host/restricted', {
                     method: 'GET',
