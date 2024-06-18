@@ -61,7 +61,7 @@
 
             const msg = document.getElementById('span')
 
-            const url = 'http://localhost:3001/auth/login';
+            const url = 'https://back-end-login.bpbzi0.easypanel.host/auth/login';
             
            
             const data = {
@@ -102,8 +102,8 @@
                     localStorage.setItem('token', token);
                     console.log('Token armazenado:', token);
                     //window.location.href = 'http://localhost:3001/restricted';
-                    
-                    fetch('http://localhost:3001/restricted', {
+
+                    fetch('https://back-end-login.bpbzi0.easypanel.host/restricted', {
                     method: 'GET',
                     headers: {
                         Authorization: `Bearer ${token}`
